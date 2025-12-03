@@ -4,139 +4,196 @@ Under the supervision of **Prof. Aditi Kothiyal**
 
 ---
 
-## 🧩 Overview
+## Overview
 
-This project builds a complete **multimodal analytics pipeline** to study collaborative learning behavior using synchronized **video and audio** recordings.  
-We extract, combine, and analyze multiple behavioral signals — including **hand–object interactions**, **eye gaze**, **facial emotions**, and **speech activity** — to construct rich per-person feature representations.
+This project presents a full **multimodal analytics pipeline** designed to study how students collaborate during hands-on learning tasks.  
+Using synchronized **video + audio**, we extract behavioral signals from:
 
-These features are then reduced using **PCA** and clustered using **K-means** to reveal meaningful collaboration patterns such as *productive*, *effective*, and *passive* learners.
+- Hand–object interactions  
+- Gaze and attention  
+- Facial emotions  
+- Speech dynamics  
 
-The pipeline generates:
+These signals are fused into per-person feature vectors and analyzed using **PCA** and **K-means clustering** to identify meaningful behavioral profiles such as *productive*, *effective*, and *passive* collaborators.
+
+The pipeline outputs include:
 - Annotated videos  
 - JSON interaction logs  
-- Per-person feature matrices  
-- Gaze, speech, and emotion features  
+- Per-person feature CSV  
+- Gaze/emotion/speech features  
 - Clustering visualizations  
-- Behavioral summaries  
+- Behavioral summaries and insights  
 
 ---
 
-## ⭐ Key Contributions
+##  Key Contributions
 
-### **1. Robust Hand–Object Interaction Pipeline**
+### **1. Complete Hand–Object Interaction Pipeline**
 
-Designed and implemented a stable pipeline that uses:
+Built using:
 - **MediaPipe Hands**  
-- **HSV-based object detection**  
+- **HSV object detection**  
 - Centroid tracking  
-- Temporal smoothing and rule-based logic  
+- Temporal smoothing and interaction logic  
 
-It detects:
-- Reach  
-- Touch  
-- Grasp  
-- Hold  
-- Object pass/shared usage  
-- Active hand(s) per person  
-- Workspace coverage and overlap  
+Detects:
+- Reach, Touch, Grasp, Hold  
+- Pass / Shared-object interactions  
+- Workspace region per person  
+- Active hand assignment  
+- Interaction frequency & duration patterns  
 
-The pipeline outputs:
-- An annotated video highlighting interactions  
-- A detailed frame-level JSON event log  
-- A structured feature CSV for behavior modeling  
+Outputs include:
+- Annotated video  
+- Event-level JSON log  
+- Feature matrix for modeling behavior  
 
 ---
 
 ### **2. Multimodal Behavioral Feature Extraction**
 
-| Modality | Features Extracted |
+| Modality | Extracted Features |
 |---------|---------------------|
-| **Hands** | interaction counts, grasp durations, hand speed, movement variability, workspace area |
-| **Objects** | object switch rate, unique objects touched, color entropy, pass/shared-object metrics |
-| **Gaze** | fixation regions, gaze heatmaps, visual attention distribution, joint attention |
-| **Emotion** | emotion proportions, transitions, stability indicators |
-| **Speech** | speaking time, pause lengths, speech overlap, speaking–listening balance |
+| **Hands** | grasp counts, reach/touch frequency, interaction durations, hand speed, workspace area |
+| **Objects** | unique objects touched, switch rate, color preference entropy, pass/shared metrics |
+| **Gaze** | fixation distribution, gaze heatmaps, joint attention |
+| **Emotions** | emotion proportions, emotion transitions, stability |
+| **Speech** | speaking time, pauses, overlap speech ratio |
 
-All modality-specific features are fused to create a comprehensive behavior profile for each participant.
-
----
-
-## 🧠 Clustering & Behavioral Profiling
-
-Using the aggregated feature matrix:
-1. Features are standardized  
-2. PCA is applied to reduce dimensionality  
-3. K-means clustering is performed using silhouette and elbow validation  
-4. Cluster visualizations are generated  
-
-The clusters reveal distinct profiles such as:
-- **Productive learners** – high engagement, frequent interaction, strong coordination  
-- **Effective collaborators** – balanced turn-taking, steady rhythmic engagement  
-- **Passive participants** – minimal interaction, weak gaze/speech transitions  
-
-All results, figures, and cluster explanations are included in the notebook:  
-**`Kmeans_clustering.ipynb`**
+Together, these form a high-resolution behavioral fingerprint for each participant.
 
 ---
 
-## 📊 Feature Highlights
+## Clustering & Collaboration Profiles
 
-Every participant receives a comprehensive feature vector that includes:
+After constructing the multimodal feature matrix:
+
+1. Features were standardized  
+2. Reduced using **PCA**  
+3. Clustered using **K-means** (validated using elbow + silhouette)  
+4. Clusters interpreted using centroid heatmaps + PCA scatter plots  
+
+### **Final Clustering Result: 3 Distinct Collaboration Profiles**
+
+Based on the PCA plots, cluster distributions, and feature gradients:
+
+---
+
+### **Cluster 1 — Productive Learners (High Engagement Group)**  
+**Behavioral Signature:**
+- Highest number of interactions (reach/touch/grasp)  
+- Longer grasp durations → deeper object manipulation  
+- High workspace coverage  
+- Strong hand speed + movement variety  
+- More object-switching and active exploration  
+- High gaze transitions (shifting attention frequently)  
+- Moderate speech contribution (balanced talking + working)
+
+**Interpretation:**  
+These students engaged deeply with the task materials, explored objects actively, and demonstrated high behavioral involvement.
+
+---
+
+### **Cluster 2 — Effective Collaborators (Balanced Group)**  
+**Behavioral Signature:**
+- Moderate number of interactions  
+- Smooth interaction rhythm (consistent gaps)  
+- Balanced speaking–listening patterns  
+- Higher joint attention alignment (from gaze)  
+- Lower unnecessary object switching  
+- Stable emotional patterns (rare spikes)  
+
+**Interpretation:**  
+These students worked efficiently, coordinated well with the partner, and displayed steady and structured collaboration patterns.
+
+---
+
+### **Cluster 3 — Passive Participants (Low Engagement Group)**  
+**Behavioral Signature:**
+- Few reach/touch/grasp events  
+- Lowest workspace coverage  
+- Minimal object exploration  
+- Limited gaze shifts (narrow attention)  
+- Long pauses or low speech activity  
+- Short or no grasp durations  
+- Very low switching across objects  
+
+**Interpretation:**  
+These students contributed minimally to the task, interacted infrequently, and often played an observing role.
+
+---
+
+## What PCA & K-means Revealed
+
+From the notebook and final PCA scatter plots:
+
+- **PC1** strongly captured *interaction intensity*  
+  (grasp counts, durations, workspace coverage, hand speed).  
+
+- **PC2** captured *attention + speech dynamics*  
+  (fixation spread, emotion variability, speech overlap).
+
+Clusters were cleanly separable along PC1 and PC2, showing that:
+- **Hands + objects → explain engagement**  
+- **Gaze + speech → explain collaboration quality**  
+
+This validates the strength of multimodal fusion.
+
+---
+
+## Feature Highlights Used in Clustering
 
 ### **Interaction Metrics**
-- Total number of interactions  
-- Reach, touch, grasp counts  
-- Average and total grasp duration  
+- Total interactions  
+- Grasp/Touch/Reach counts  
 - Interaction frequency (per minute)  
-- Interaction gaps  
-- Response times  
+- Interaction gaps & response times  
 
 ### **Movement & Workspace**
-- Mean and variance of hand speed  
-- Convex-hull workspace area  
-- Workspace overlap ratio between partners  
+- Average hand speed  
+- Speed variability  
+- Workspace convex hull  
+- Workspace overlap ratio  
 
 ### **Object Behavior**
-- Object switch rate  
-- Number of unique objects interacted with  
 - Color preference entropy  
-- Object pass and shared-object counts  
+- Unique object touches  
+- Object switch rate  
+- Shared-object frames  
 
-### **Gaze & Emotion (optional modules)**
-- Fixation heatmaps  
-- Region-wise attention  
-- Emotion distributions and transitions  
+### **Gaze & Emotion**
+- Fixation density  
+- Gaze variability  
+- Emotion distributions  
 
-### **Speech Features**
-- Total speaking duration  
-- Pause-length distributions  
-- Overlap speech ratio  
-
----
-
-## 📈 Results Summary
-
-Key findings from the final analysis:
-
-- **Multimodal fusion significantly improves clustering clarity**, compared to using a single modality.  
-- Interaction-based features (grasp durations, workspace coverage, etc.) were highly discriminative between clusters.  
-- Gaze distribution and speech dynamics strongly supported identifying effective vs. passive participants.  
-- PCA scatterplots and feature heatmaps show well-separated clusters aligned with intuitive collaboration behaviors.  
-
-All detailed figures and interpretations are available in the poster and notebook.
+### **Speech**
+- Speaking duration  
+- Pause statistics  
+- Speech overlap %  
 
 ---
 
-## ⚠️ Challenges & Learnings
+##  Results Summary (Final Evaluation)
 
-- Hand detection becomes unstable with occlusions or rapid movement  
-- Gaze estimation is sensitive to video resolution and face angle  
-- Audio noise affects speech segmentation reliability  
-- HSV object detection requires lighting-dependent tuning  
-- Emotion recognition accuracy drops for small or blurred faces  
+- **Multimodal features consistently produced tighter, well-separated clusters** compared to using any single modality.  
+- Interaction features such as **grasp duration**, **workspace area**, and **object-switch rate** had the strongest cluster influence.  
+- Gaze and speech added nuance, separating *productive* from *effective* collaborators.  
+- Passive participants showed low activation across all modalities — forming a clean, distinct cluster.  
 
-Despite these challenges, the combined pipeline produces robust and interpretable multimodal behavioral insights.
+These findings strongly support the value of multimodal analytics for understanding collaborative learning behavior.
 
 ---
 
+## Challenges
 
+- Hand occlusions and rapid movements created landmark noise  
+- Gaze estimation struggled with low-resolution faces  
+- Audio noise caused imperfect speech segmentation  
+- HSV ranges required fine-tuning for each environment  
+- Emotions difficult to detect from small facial regions  
+
+Despite these, the final system produced consistent and interpretable behavioral profiles.
+
+
+
+---
